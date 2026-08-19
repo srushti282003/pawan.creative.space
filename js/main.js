@@ -320,19 +320,19 @@ function initZoom() {
   );
 }
 
-// 10. WHY CHOOSE US - HORIZONTAL SCROLL (Desktop) / Stack (Mobile)
+// 10. WHY CHOOSE US - HORIZONTAL SCROLL
 function initWhyChoose() {
   const track = document.querySelector('.why-choose__track');
   if (!track) return;
 
-  // Always make cards visible first
-  const cards = document.querySelectorAll('.value-card');
-  gsap.set(cards, { opacity: 1, scale: 1, clearProps: 'all' });
+  // On mobile/tablet - skip pinned scroll, just show cards normally
+  if (window.innerWidth <= 1024) {
+    // Make all cards visible
+    gsap.set('.value-card', { opacity: 1, scale: 1, clearProps: 'all' });
+    return;
+  }
 
-  const isMobile = window.innerWidth <= 1024;
-  if (isMobile) return; // On mobile/tablet, just show as stacked
-
-  const getScrollAmount = () => -(track.scrollWidth - window.innerWidth + 100);
+  const getScrollAmount = () => -(track.scrollWidth - window.innerWidth + 200);
 
   const tween = gsap.to(track, {
     x: getScrollAmount,
@@ -346,10 +346,24 @@ function initWhyChoose() {
     end: () => `+=${Math.abs(getScrollAmount())}`,
     pin: true,
     animation: tween,
-    scrub: 1.2,
-    invalidateOnRefresh: true,
-    onRefresh: () => gsap.set(cards, { opacity: 1, clearProps: 'all' })
+    scrub: 1,
+    invalidateOnRefresh: true
   });
+
+  // Cards stagger reveal
+  const cards = document.querySelectorAll('.value-card');
+  if (cards.length > 0) {
+    gsap.set(cards, { scale: 0.9, opacity: 0 });
+    ScrollTrigger.create({
+      trigger: '.why-choose',
+      start: 'top 80%',
+      end: 'bottom 10%',
+      onEnter: () => gsap.to(cards, { scale: 1, opacity: 1, stagger: 0.1, duration: 0.8, ease: 'power2.out' }),
+      onLeave: () => gsap.set(cards, { scale: 0.9, opacity: 0 }),
+      onEnterBack: () => gsap.to(cards, { scale: 1, opacity: 1, stagger: 0.1, duration: 0.8, ease: 'power2.out' }),
+      onLeaveBack: () => gsap.set(cards, { scale: 0.9, opacity: 0 })
+    });
+  }
 }
 
 // 11. WORKS - GRID ANIMATION
@@ -573,32 +587,29 @@ function initTestimonials() {
 
 // 16. CONTACT FORM ANIMATION
 function initContact() {
-  // Keep all contact content always visible - no hidden animations
-  gsap.set(['.contact__detail', '.contact__form-card', '.contact__tagline', '.contact__col', '.contact__links a'], {
-    opacity: 1, clearProps: 'all'
-  });
-
-  // Subtle entrance only for form card (no clip-path)
-  const formCard = document.querySelector('.contact__form-card');
-  if (formCard) {
-    gsap.fromTo(formCard,
-      { y: 30, opacity: 0 },
-      {
-        y: 0, opacity: 1, duration: 1, ease: 'power2.out',
-        scrollTrigger: { trigger: formCard, start: 'top 90%', once: true }
-      }
-    );
-  }
-
   const details = document.querySelectorAll('.contact__detail');
   if (details.length > 0) {
-    gsap.fromTo(details,
-      { y: 20, opacity: 0 },
-      {
-        y: 0, opacity: 1, stagger: 0.08, duration: 0.8, ease: 'power2.out',
-        scrollTrigger: { trigger: '.contact__details', start: 'top 90%', once: true }
-      }
-    );
+    gsap.set(details, { x: -30, opacity: 0 });
+    ScrollTrigger.create({
+      trigger: '.contact__details',
+      start: 'top 80%',
+      end: 'bottom 10%',
+      onEnter: () => gsap.to(details, { x: 0, opacity: 1, stagger: 0.08, duration: 0.6, ease: 'power2.out' }),
+      onLeaveBack: () => gsap.set(details, { x: -30, opacity: 0 })
+    });
+  }
+
+  const formCard = document.querySelector('.contact__form-card');
+  if (formCard) {
+    // Don't use clip-path — use opacity + y for reliability
+    gsap.set(formCard, { opacity: 0, y: 30 });
+    ScrollTrigger.create({
+      trigger: formCard,
+      start: 'top 85%',
+      end: 'bottom 10%',
+      onEnter: () => gsap.to(formCard, { opacity: 1, y: 0, duration: 1.2, ease: 'power2.out' }),
+      onLeaveBack: () => gsap.set(formCard, { opacity: 0, y: 30 })
+    });
   }
 
 }

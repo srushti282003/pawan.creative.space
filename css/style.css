@@ -1565,3 +1565,33 @@ a {
 .split-char {
   transform: translateY(0) !important;
 }
+
+/* HEADER LINKS UPPERCASE */
+.nav-link, .menu-link { text-transform: uppercase !important; font-weight: 500; font-size: 0.75rem; }
+
+/* ─── MOBILE TARGETED FIXES (do not change desktop design) ─── */
+
+/* Services section - stack on mobile */
+@media (max-width: 767px) {
+  .services__grid { grid-template-columns: 1fr !important; gap: 2rem !important; }
+  .services__images { display: none; }
+  .services__desc { font-size: 1rem; line-height: 1.85; }
+  .services__list { grid-template-columns: 1fr; }
+}
+
+/* Why Choose Us - wrap cards on mobile so all are visible */
+@media (max-width: 1024px) {
+  .why-choose__track { flex-wrap: wrap !important; gap: 1rem !important; }
+  .value-card { min-width: calc(50% - 0.5rem) !important; }
+}
+@media (max-width: 600px) {
+  .value-card { min-width: 100% !important; }
+}
+
+/* Contact section - ensure text always visible on mobile */
+@media (max-width: 767px) {
+  .contact__grid { grid-template-columns: 1fr !important; }
+  .contact__grid-inner { grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .contact__copyright { flex-direction: column; gap: 0.5rem; text-align: center; }
+  .contact__form-card { clip-path: none !important; opacity: 1 !important; }
+}
