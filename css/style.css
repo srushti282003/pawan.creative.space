@@ -1499,7 +1499,7 @@ a {
 /* NEW MOBILE FIXES */
 @media (max-width: 767px) {
   .services__desc br { display: none; }
-  .section-heading br { display: none; }
+  /* .section-heading br { display: none; } removed so headings break nicely */
   .contact__tagline br { display: none; }
 }
 
