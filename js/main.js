@@ -320,44 +320,36 @@ function initZoom() {
   );
 }
 
-// 10. WHY CHOOSE US - HORIZONTAL SCROLL
+// 10. WHY CHOOSE US - HORIZONTAL SCROLL (Desktop) / Stack (Mobile)
 function initWhyChoose() {
   const track = document.querySelector('.why-choose__track');
   if (!track) return;
-  
-  function getScrollAmount() {
-    return -(track.scrollWidth - window.innerWidth + 100);
-  }
-  
+
+  // Always make cards visible first
+  const cards = document.querySelectorAll('.value-card');
+  gsap.set(cards, { opacity: 1, scale: 1, clearProps: 'all' });
+
+  const isMobile = window.innerWidth <= 1024;
+  if (isMobile) return; // On mobile/tablet, just show as stacked
+
+  const getScrollAmount = () => -(track.scrollWidth - window.innerWidth + 100);
+
   const tween = gsap.to(track, {
     x: getScrollAmount,
-    ease: 'none'
+    ease: 'none',
+    paused: true
   });
-  
+
   ScrollTrigger.create({
     trigger: '.why-choose',
     start: 'top top',
-    end: () => `+=${getScrollAmount() * -1}`,
+    end: () => `+=${Math.abs(getScrollAmount())}`,
     pin: true,
     animation: tween,
-    scrub: 1,
-    invalidateOnRefresh: true
+    scrub: 1.2,
+    invalidateOnRefresh: true,
+    onRefresh: () => gsap.set(cards, { opacity: 1, clearProps: 'all' })
   });
-  
-  // Card stagger reveal
-  const cards = document.querySelectorAll('.value-card');
-  if (cards.length > 0) {
-    gsap.set(cards, { scale: 0.9, opacity: 0 });
-    ScrollTrigger.create({
-      trigger: '.why-choose',
-      start: 'top 80%',
-      end: 'bottom 10%',
-      onEnter: () => gsap.to(cards, { scale: 1, opacity: 1, stagger: 0.1, duration: 0.8, ease: 'power2.out' }),
-      onLeave: () => gsap.set(cards, { scale: 0.9, opacity: 0 }),
-      onEnterBack: () => gsap.to(cards, { scale: 1, opacity: 1, stagger: 0.1, duration: 0.8, ease: 'power2.out' }),
-      onLeaveBack: () => gsap.set(cards, { scale: 0.9, opacity: 0 })
-    });
-  }
 }
 
 // 11. WORKS - GRID ANIMATION
@@ -581,60 +573,36 @@ function initTestimonials() {
 
 // 16. CONTACT FORM ANIMATION
 function initContact() {
-  const details = document.querySelectorAll('.contact__detail');
-  if (details.length > 0) {
-    gsap.set(details, { x: -30, opacity: 0 });
-    ScrollTrigger.create({
-      trigger: '.contact__details',
-      start: 'top 80%',
-      end: 'bottom 10%',
-      onEnter: () => gsap.to(details, { x: 0, opacity: 1, stagger: 0.08, duration: 0.6, ease: 'power2.out' }),
-      onLeaveBack: () => gsap.set(details, { x: -30, opacity: 0 })
-    });
-  }
-  
+  // Keep all contact content always visible - no hidden animations
+  gsap.set(['.contact__detail', '.contact__form-card', '.contact__tagline', '.contact__col', '.contact__links a'], {
+    opacity: 1, clearProps: 'all'
+  });
+
+  // Subtle entrance only for form card (no clip-path)
   const formCard = document.querySelector('.contact__form-card');
   if (formCard) {
-    gsap.set(formCard, { clipPath: 'inset(0 100% 0 0)' });
-    ScrollTrigger.create({
-      trigger: formCard,
-      start: 'top 85%',
-      end: 'bottom 10%',
-      onEnter: () => gsap.to(formCard, { clipPath: 'inset(0 0% 0 0)', duration: 1.2, ease: 'expo.inOut' }),
-      onLeave: () => gsap.set(formCard, { clipPath: 'inset(0 0 0 100%)' }),
-      onEnterBack: () => gsap.to(formCard, { clipPath: 'inset(0 0% 0 0)', duration: 1.2, ease: 'expo.inOut' }),
-      onLeaveBack: () => gsap.set(formCard, { clipPath: 'inset(0 100% 0 0)' })
-    });
+    gsap.fromTo(formCard,
+      { y: 30, opacity: 0 },
+      {
+        y: 0, opacity: 1, duration: 1, ease: 'power2.out',
+        scrollTrigger: { trigger: formCard, start: 'top 90%', once: true }
+      }
+    );
   }
-  
-  // Form submission
-  const contactForm = document.getElementById('contact-form');
-  if (contactForm) {
-    contactForm.addEventListener('submit', (e) => {
-      e.preventDefault();
-      
-      const name = contactForm.querySelector('input[name="name"]').value;
-      const email = contactForm.querySelector('input[name="email"]').value;
-      const phone = contactForm.querySelector('input[name="phone"]').value;
-      const message = contactForm.querySelector('textarea[name="message"]').value;
-      
-      const text = `*Pawan Creative Space - New Inquiry*\n\n` +
-                   `*Name:* ${name}\n` +
-                   `*Email:* ${email}\n` +
-                   `*Phone:* ${phone}\n` +
-                   `*Message:* ${message}`;
-      
-      const encodedText = encodeURIComponent(text);
-      const whatsappUrl = `https://wa.me/918308513606?text=${encodedText}`;
-      
-      window.open(whatsappUrl, '_blank');
-      
-      contactForm.reset();
-    });
+
+  const details = document.querySelectorAll('.contact__detail');
+  if (details.length > 0) {
+    gsap.fromTo(details,
+      { y: 20, opacity: 0 },
+      {
+        y: 0, opacity: 1, stagger: 0.08, duration: 0.8, ease: 'power2.out',
+        scrollTrigger: { trigger: '.contact__details', start: 'top 90%', once: true }
+      }
+    );
   }
+
 }
 
-// 3. SCROLL PROGRESS BAR
 function initProgressBar() {
   const bar = document.getElementById('progress-bar');
   if (!bar) return;
