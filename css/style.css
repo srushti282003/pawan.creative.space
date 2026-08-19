@@ -1654,3 +1654,46 @@ a {
     fill: var(--off-black);
   }
 }
+
+/* NAVBAR SOCIAL ICONS - ALWAYS VISIBLE ON DESKTOP */
+.nav-socials {
+  display: flex !important;
+  gap: 1.2rem;
+  align-items: center;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+.nav-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--off-black);
+  transition: color 0.3s, transform 0.3s;
+}
+.navbar.scrolled .nav-icon {
+  color: var(--cream);
+}
+.nav-icon:hover {
+  color: var(--accent-gold);
+  transform: scale(1.15);
+}
+.nav-icon svg {
+  width: 20px !important;
+  height: 20px !important;
+  fill: currentColor !important;
+}
+/* CONTACT NAV BUTTON - styled as pill */
+a.nav-link[href*="contact"] {
+  padding: 0.45rem 1.2rem;
+  border: 1px solid currentColor;
+  border-radius: 50px;
+  transition: background 0.3s, color 0.3s;
+}
+a.nav-link[href*="contact"]:hover {
+  background: var(--off-black);
+  color: var(--cream) !important;
+}
+.navbar.scrolled a.nav-link[href*="contact"]:hover {
+  background: var(--cream);
+  color: var(--off-black) !important;
+}
