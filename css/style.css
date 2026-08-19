@@ -1625,3 +1625,32 @@ a {
   font-family: 'Inter', sans-serif;
   opacity: 0.8;
 }
+
+/* MOBILE SOCIAL ICON SIZE LARGE */
+@media (max-width: 991px) {
+  .menu-overlay__social { 
+    gap: 2rem !important; 
+    margin-top: 2.5rem;
+    justify-content: center;
+    display: flex;
+  }
+  .menu-overlay__social .nav-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background: rgba(0,0,0,0.06);
+    transition: background 0.3s, transform 0.3s;
+  }
+  .menu-overlay__social .nav-icon:hover {
+    background: rgba(184,151,106,0.15);
+    transform: scale(1.1);
+  }
+  .menu-overlay__social .nav-icon svg {
+    width: 26px !important;
+    height: 26px !important;
+    fill: var(--off-black);
+  }
+}

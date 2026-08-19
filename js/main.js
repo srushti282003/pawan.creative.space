@@ -616,28 +616,30 @@ function initContact() {
     });
   }
   
-  // Form submission
+  // Form submission - with BHK + Budget sent to WhatsApp
   const contactForm = document.getElementById('contact-form');
   if (contactForm) {
     contactForm.addEventListener('submit', (e) => {
       e.preventDefault();
-      
-      const name = contactForm.querySelector('input[name="name"]').value;
-      const email = contactForm.querySelector('input[name="email"]').value;
-      const phone = contactForm.querySelector('input[name="phone"]').value;
-      const message = contactForm.querySelector('textarea[name="message"]').value;
-      
-      const text = `*Pawan Creative Space - New Inquiry*\n\n` +
+
+      const name    = (contactForm.querySelector('input[name="name"]')       || {}).value || '';
+      const email   = (contactForm.querySelector('input[name="email"]')      || {}).value || '';
+      const phone   = (contactForm.querySelector('input[name="phone"]')      || {}).value || '';
+      const bhkEl   =  contactForm.querySelector('select[name="bhk"]');
+      const bhk     = bhkEl ? bhkEl.value : 'Not specified';
+      const budget  = (contactForm.querySelector('input[name="budget"]')     || {}).value || '';
+      const message = (contactForm.querySelector('textarea[name="message"]') || {}).value || '';
+
+      const text = `*Pawan Creative Space — New Inquiry*\n\n` +
                    `*Name:* ${name}\n` +
                    `*Email:* ${email}\n` +
                    `*Phone:* ${phone}\n` +
+                   `*Property Type:* ${bhk}\n` +
+                   `*Budget:* ₹${budget}\n` +
                    `*Message:* ${message}`;
-      
-      const encodedText = encodeURIComponent(text);
-      const whatsappUrl = `https://wa.me/918308513606?text=${encodedText}`;
-      
+
+      const whatsappUrl = `https://wa.me/918308513606?text=${encodeURIComponent(text)}`;
       window.open(whatsappUrl, '_blank');
-      
       contactForm.reset();
     });
   }
