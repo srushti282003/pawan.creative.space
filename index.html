@@ -63,8 +63,11 @@
         <svg viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .501 6.186C0 8.07 0 12 0 12s0 3.93.501 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.377.505 9.377.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
       </a>
     </div>
-</div>
-<main id="smooth-content">
+    <div class="menu-overlay__location">
+      <p>&#128205; Mumbai, Maharashtra</p>
+    </div>
+  </div>
+  <main id="smooth-content">
 <section class="hero" id="hero">
   <div class="hero__slider">
     <div class="hero__col hero__col--left">
@@ -205,6 +208,22 @@
           <div class="form-group"><label>Name</label><input type="text" name="name" placeholder="Your name" required></div>
           <div class="form-group"><label>Email</label><input type="email" name="email" placeholder="Your email" required></div>
           <div class="form-group"><label>Phone</label><input type="tel" name="phone" placeholder="Your phone number"></div>
+            <div class="form-group"><label>Property Type</label>
+              <select name="bhk" required>
+                <option value="" disabled selected>Select BHK Option</option>
+                <option value="1 BHK">1 BHK</option>
+                <option value="2 BHK">2 BHK</option>
+                <option value="3 BHK">3 BHK</option>
+                <option value="4 BHK">4 BHK</option>
+                <option value="5 BHK">5 BHK</option>
+                <option value="6 BHK">6 BHK</option>
+                <option value="7 BHK">7 BHK</option>
+                <option value="8 BHK">8 BHK</option>
+                <option value="9 BHK">9 BHK</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+            <div class="form-group"><label>Budget (₹)</label><input type="number" name="budget" placeholder="Enter estimated budget in Rupees" required></div>
           <div class="form-group"><label>Message</label><textarea name="message" placeholder="Tell us about your project" rows="4" required></textarea></div>
           <button type="submit" class="btn-submit">Send via WhatsApp &#9658;</button>
           <p class="form-note">We typically respond within 24 hours</p>
