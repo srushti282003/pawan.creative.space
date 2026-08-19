@@ -324,33 +324,27 @@ function initZoom() {
 function initWhyChoose() {
   const track = document.querySelector('.why-choose__track');
   if (!track) return;
-
-  // On mobile/tablet - skip pinned scroll, just show cards normally
-  if (window.innerWidth <= 1024) {
-    // Make all cards visible
-    gsap.set('.value-card', { opacity: 1, scale: 1, clearProps: 'all' });
-    return;
+  
+  function getScrollAmount() {
+    return -(track.scrollWidth - window.innerWidth + 100);
   }
-
-  const getScrollAmount = () => -(track.scrollWidth - window.innerWidth + 200);
-
+  
   const tween = gsap.to(track, {
     x: getScrollAmount,
-    ease: 'none',
-    paused: true
+    ease: 'none'
   });
-
+  
   ScrollTrigger.create({
     trigger: '.why-choose',
     start: 'top top',
-    end: () => `+=${Math.abs(getScrollAmount())}`,
+    end: () => `+=${getScrollAmount() * -1}`,
     pin: true,
     animation: tween,
     scrub: 1,
     invalidateOnRefresh: true
   });
-
-  // Cards stagger reveal
+  
+  // Card stagger reveal
   const cards = document.querySelectorAll('.value-card');
   if (cards.length > 0) {
     gsap.set(cards, { scale: 0.9, opacity: 0 });
@@ -598,22 +592,49 @@ function initContact() {
       onLeaveBack: () => gsap.set(details, { x: -30, opacity: 0 })
     });
   }
-
+  
   const formCard = document.querySelector('.contact__form-card');
   if (formCard) {
-    // Don't use clip-path — use opacity + y for reliability
-    gsap.set(formCard, { opacity: 0, y: 30 });
+    gsap.set(formCard, { clipPath: 'inset(0 100% 0 0)' });
     ScrollTrigger.create({
       trigger: formCard,
       start: 'top 85%',
       end: 'bottom 10%',
-      onEnter: () => gsap.to(formCard, { opacity: 1, y: 0, duration: 1.2, ease: 'power2.out' }),
-      onLeaveBack: () => gsap.set(formCard, { opacity: 0, y: 30 })
+      onEnter: () => gsap.to(formCard, { clipPath: 'inset(0 0% 0 0)', duration: 1.2, ease: 'expo.inOut' }),
+      onLeave: () => gsap.set(formCard, { clipPath: 'inset(0 0 0 100%)' }),
+      onEnterBack: () => gsap.to(formCard, { clipPath: 'inset(0 0% 0 0)', duration: 1.2, ease: 'expo.inOut' }),
+      onLeaveBack: () => gsap.set(formCard, { clipPath: 'inset(0 100% 0 0)' })
     });
   }
-
+  
+  // Form submission
+  const contactForm = document.getElementById('contact-form');
+  if (contactForm) {
+    contactForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      
+      const name = contactForm.querySelector('input[name="name"]').value;
+      const email = contactForm.querySelector('input[name="email"]').value;
+      const phone = contactForm.querySelector('input[name="phone"]').value;
+      const message = contactForm.querySelector('textarea[name="message"]').value;
+      
+      const text = `*Pawan Creative Space - New Inquiry*\n\n` +
+                   `*Name:* ${name}\n` +
+                   `*Email:* ${email}\n` +
+                   `*Phone:* ${phone}\n` +
+                   `*Message:* ${message}`;
+      
+      const encodedText = encodeURIComponent(text);
+      const whatsappUrl = `https://wa.me/918308513606?text=${encodedText}`;
+      
+      window.open(whatsappUrl, '_blank');
+      
+      contactForm.reset();
+    });
+  }
 }
 
+// 3. SCROLL PROGRESS BAR
 function initProgressBar() {
   const bar = document.getElementById('progress-bar');
   if (!bar) return;

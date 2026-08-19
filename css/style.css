@@ -402,6 +402,8 @@ a {
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  opacity: 0;
+  transform: translateY(30px);
 }
 .services__images {
   position: relative;
@@ -1492,106 +1494,4 @@ a {
   font-size: clamp(3rem, 6vw, 6rem);
   margin-top: 1rem;
   font-weight: 300;
-}
-
-/* MOBILE: SERVICES SECTION FIX */
-@media (max-width: 767px) {
-  .services { padding: 3rem 0; }
-  .services__grid { grid-template-columns: 1fr; gap: 2rem; }
-  .services__images { display: none; }
-  .services__desc {
-    font-size: 1rem;
-    line-height: 1.9;
-    word-break: keep-all;
-    overflow-wrap: break-word;
-    hyphens: none;
-  }
-  .services__list { grid-template-columns: 1fr; gap: 0.5rem; }
-  .service-item { font-size: 0.9rem; }
-}
-
-/* WHY CHOOSE US FIX - cards always visible */
-.value-card {
-  opacity: 1 !important;
-  transform: none !important;
-  visibility: visible !important;
-}
-@media (max-width: 1024px) {
-  .why-choose__track {
-    flex-wrap: wrap;
-    overflow: visible;
-  }
-  .value-card {
-    min-width: calc(50% - 1rem);
-    flex-shrink: 0;
-  }
-}
-@media (max-width: 600px) {
-  .value-card {
-    min-width: 100%;
-  }
-  .why-choose__track-wrap { overflow: visible; }
-}
-
-/* CONTACT FIX - always visible */
-.contact__detail,
-.contact__form-card,
-.contact__grid,
-.contact__tagline,
-.contact__links a,
-.contact__col h4 {
-  opacity: 1 !important;
-  transform: none !important;
-  clip-path: none !important;
-  visibility: visible !important;
-}
-@media (max-width: 767px) {
-  .contact__grid { grid-template-columns: 1fr; }
-  .contact__grid-inner { grid-template-columns: 1fr 1fr; gap: 1rem; }
-  .contact__copyright { flex-direction: column; gap: 0.5rem; text-align: center; }
-  .contact__tagline { font-size: 1rem; }
-}
-
-/* GENERAL VISIBILITY FIX */
-.section-heading,
-.section-label,
-.reveal-text,
-.services__desc,
-.contact__tagline {
-  opacity: 1 !important;
-  transform: translateY(0) !important;
-  visibility: visible !important;
-}
-.split-char {
-  transform: translateY(0) !important;
-}
-
-/* HEADER LINKS UPPERCASE */
-.nav-link, .menu-link { text-transform: uppercase !important; font-weight: 500; font-size: 0.75rem; }
-
-/* ─── MOBILE TARGETED FIXES (do not change desktop design) ─── */
-
-/* Services section - stack on mobile */
-@media (max-width: 767px) {
-  .services__grid { grid-template-columns: 1fr !important; gap: 2rem !important; }
-  .services__images { display: none; }
-  .services__desc { font-size: 1rem; line-height: 1.85; }
-  .services__list { grid-template-columns: 1fr; }
-}
-
-/* Why Choose Us - wrap cards on mobile so all are visible */
-@media (max-width: 1024px) {
-  .why-choose__track { flex-wrap: wrap !important; gap: 1rem !important; }
-  .value-card { min-width: calc(50% - 0.5rem) !important; }
-}
-@media (max-width: 600px) {
-  .value-card { min-width: 100% !important; }
-}
-
-/* Contact section - ensure text always visible on mobile */
-@media (max-width: 767px) {
-  .contact__grid { grid-template-columns: 1fr !important; }
-  .contact__grid-inner { grid-template-columns: 1fr 1fr; gap: 1rem; }
-  .contact__copyright { flex-direction: column; gap: 0.5rem; text-align: center; }
-  .contact__form-card { clip-path: none !important; opacity: 1 !important; }
 }
