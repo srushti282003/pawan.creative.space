@@ -1495,3 +1495,32 @@ a {
   margin-top: 1rem;
   font-weight: 300;
 }
+
+/* NEW MOBILE FIXES */
+@media (max-width: 767px) {
+  .services__desc br { display: none; }
+  .section-heading br { display: none; }
+  .contact__tagline br { display: none; }
+}
+
+.nav-socials {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+.nav-icon svg {
+  width: 18px;
+  height: 18px;
+  fill: currentColor;
+  transition: color 0.3s;
+}
+.nav-icon:hover svg {
+  color: var(--accent-gold);
+}
+
+.why-choose__track-wrap::-webkit-scrollbar {
+  display: none;
+}
+.why-choose__track-wrap {
+  scrollbar-width: none;
+}

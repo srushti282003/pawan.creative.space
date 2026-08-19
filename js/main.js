@@ -320,45 +320,54 @@ function initZoom() {
   );
 }
 
-// 10. WHY CHOOSE US - HORIZONTAL SCROLL
+// 10. WHY CHOOSE US - AUTO SCROLLER
 function initWhyChoose() {
-  const track = document.querySelector('.why-choose__track');
-  if (!track) return;
+  const trackWrap = document.querySelector('.why-choose__track-wrap');
+  if (!trackWrap) return;
   
-  function getScrollAmount() {
-    return -(track.scrollWidth - window.innerWidth + 100);
-  }
+  trackWrap.style.overflowX = 'auto';
+  trackWrap.style.overflowY = 'hidden';
+  trackWrap.style.scrollBehavior = 'auto'; // Auto for smooth JS scrolling
+  trackWrap.style.scrollSnapType = 'x mandatory';
+  trackWrap.style.paddingBottom = '20px';
+  trackWrap.style.cursor = 'grab';
   
-  const tween = gsap.to(track, {
-    x: getScrollAmount,
-    ease: 'none'
-  });
-  
-  ScrollTrigger.create({
-    trigger: '.why-choose',
-    start: 'top top',
-    end: () => `+=${getScrollAmount() * -1}`,
-    pin: true,
-    animation: tween,
-    scrub: 1,
-    invalidateOnRefresh: true
-  });
-  
-  // Card stagger reveal
   const cards = document.querySelectorAll('.value-card');
-  if (cards.length > 0) {
-    gsap.set(cards, { scale: 0.9, opacity: 0 });
-    ScrollTrigger.create({
-      trigger: '.why-choose',
-      start: 'top 80%',
-      end: 'bottom 10%',
-      onEnter: () => gsap.to(cards, { scale: 1, opacity: 1, stagger: 0.1, duration: 0.8, ease: 'power2.out' }),
-      onLeave: () => gsap.set(cards, { scale: 0.9, opacity: 0 }),
-      onEnterBack: () => gsap.to(cards, { scale: 1, opacity: 1, stagger: 0.1, duration: 0.8, ease: 'power2.out' }),
-      onLeaveBack: () => gsap.set(cards, { scale: 0.9, opacity: 0 })
-    });
+  cards.forEach(card => {
+    card.style.scrollSnapAlign = 'start';
+    card.style.opacity = '1';
+    card.style.transform = 'none';
+    card.style.visibility = 'visible';
+  });
+
+  // Auto scroll logic
+  let isScrolling = true;
+  let scrollSpeed = 1;
+  let currentScroll = 0;
+  
+  trackWrap.addEventListener('mouseenter', () => isScrolling = false);
+  trackWrap.addEventListener('mouseleave', () => isScrolling = true);
+  trackWrap.addEventListener('touchstart', () => isScrolling = false);
+  trackWrap.addEventListener('touchend', () => {
+    setTimeout(() => isScrolling = true, 1500);
+  });
+
+  function autoScroll() {
+    if (isScrolling) {
+      currentScroll += scrollSpeed;
+      if (currentScroll >= trackWrap.scrollWidth - trackWrap.clientWidth) {
+        currentScroll = 0;
+      }
+      trackWrap.scrollLeft = currentScroll;
+    } else {
+      currentScroll = trackWrap.scrollLeft;
+    }
+    requestAnimationFrame(autoScroll);
   }
+  
+  requestAnimationFrame(autoScroll);
 }
+
 
 // 11. WORKS - GRID ANIMATION
 function initWorks() {
